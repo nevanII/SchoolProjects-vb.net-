@@ -1,0 +1,977 @@
+Imports System.Console
+
+Module Module1
+
+    Dim u1name, u2name, u1sym, u2sym As String
+
+    Dim uinput As String
+
+    Dim board(3, 3) As String
+
+    Dim ranum As Integer = 0
+
+    Dim valid As Boolean = False
+
+    Dim victory As Boolean = False
+
+    Dim emptytruth As Integer = 0
+
+    Dim til3 As Integer = 0
+
+    Dim gamedone As Boolean = False
+
+    Sub Main()
+
+        WriteLine("What is player one's name?")
+
+        u1name = ReadLine()
+
+        WriteLine("What is player two's name?")
+
+        u2name = ReadLine()
+
+        Do Until gamedone = True
+
+            WriteLine("Hello {0} and {1}, welcome to noughts and crosses", u1name, u2name)
+
+            WriteLine("Would you like to 1. - Play the Game , 2. - Load a win or 3. - Save a win OR 4. - Play against the greatest noughts and crosses entity conceived by the human mind OR 5. - Exit the game")
+
+            uinput = ReadLine()
+
+            Select Case uinput
+
+                Case 1
+
+                    playgame()
+
+                Case 2
+
+                    loadawin()
+
+                Case 3
+
+                    saveawin()
+
+                Case 4
+
+                    AlphaZeroEngineReborn()
+
+                Case 5
+
+                    gamedone = True
+
+                Case Else
+
+                    WriteLine("This was not a valid input - try again")
+
+            End Select
+
+            ReadKey()
+
+        Loop
+
+    End Sub
+
+    Sub playgame()
+
+        WriteLine("Welcome to the game")
+
+        PickSymbols()
+
+        boardpopulation()
+
+        Do Until emptytruth = -1
+
+            boardfullcheck()
+
+        Loop
+
+    End Sub
+
+    Sub loadawin()
+
+        fileopen()
+
+        WriteLine("Win loaded")
+
+    End Sub
+
+    Sub saveawin()
+
+        filesave()
+
+        WriteLine("Win saved")
+
+    End Sub
+
+    Sub PickSymbols()
+
+        Randomize()
+
+        ranum = Math.Ceiling(Int(2) * Rnd())
+
+        WriteLine(ranum)
+
+        If ranum = 1 Then
+
+            WriteLine("Player 1 choose X or O")
+
+            u1sym = ReadLine()
+
+            If u1sym = "X" Then
+
+                WriteLine("Player one will use X")
+
+                u2sym = "O"
+
+            ElseIf u1sym = "O" Then
+
+                WriteLine("Player one will use O")
+
+                u2sym = "X"
+
+            Else
+
+                WriteLine("You did not input a valid input")
+
+            End If
+
+        Else
+
+            WriteLine("Player 2 choose X or O")
+
+            u2sym = ReadLine()
+
+            If u2sym = "X" Then
+
+                WriteLine("Player two will use X")
+
+                u1sym = "O"
+
+            ElseIf u2sym = "O" Then
+
+                WriteLine("Player two will use O")
+
+                u1sym = "X"
+
+            Else
+
+                WriteLine("You did not input a valid input")
+
+            End If
+
+        End If
+
+    End Sub
+
+    Sub updateGameGrid()
+
+        'For Each s As String In board(3, 3)
+
+        'Console.WriteLine(s)
+
+        'Next
+
+        For i As Integer = 0 To 3
+
+            For x As Integer = 0 To 3
+
+                Write(board(i, x))
+
+            Next
+
+            WriteLine()
+
+        Next
+
+    End Sub
+
+    Sub placeSymbol()
+
+        Clear()
+
+        'If board(1, 1) Or board(1, 2) Or board(1, 3) Or board(2, 1) Or board(2, 2) Or board(2, 3) Or board(3, 1) Or board(3, 2) Or board(3, 3) = " - " Then
+
+        'WriteLine("The board is not full.")
+
+        If u1sym = "X" Then
+
+            Do Until valid = True
+
+                WriteLine("{0} will go first. What x value do you want?", u1name)
+
+                Dim xvalu As Integer = ReadLine()
+
+                WriteLine("{0} what do you want your y value to be?", u1name)
+
+                Dim yvalu As Integer = ReadLine()
+
+                If board(xvalu, yvalu) Is " - " Then
+
+                    board(xvalu, yvalu) = " X "
+
+                    valid = True
+
+                Else
+
+                    WriteLine("You cannot place there, as the place is full.")
+
+                End If
+
+            Loop
+
+            updateGameGrid()
+
+            checkforwin()
+
+            valid = False
+
+            Do Until valid = True
+
+                WriteLine("{0} will go next. What x value do you want?", u2name)
+
+                Dim xval As Integer = ReadLine()
+
+                WriteLine("{0} what do you want your y value to be?", u2name)
+
+                Dim yval As Integer = ReadLine()
+
+                If board(xval, yval) Is " - " Then
+
+                    board(xval, yval) = " O "
+
+                    valid = True
+
+                Else
+
+                    WriteLine("You cannot place there, as the place is full.")
+
+                End If
+
+            Loop
+
+        ElseIf u2sym = "X" Then
+
+            Do Until valid = True
+
+                WriteLine("{0} will go first. What x value do you want?", u2name)
+
+                Dim xvalu As Integer = ReadLine()
+
+                WriteLine("{0} what do you want your y value to be?", u2name)
+
+                Dim yvalu As Integer = ReadLine()
+
+                If board(xvalu, yvalu) Is " - " Then
+
+                    board(xvalu, yvalu) = " X "
+
+                    valid = True
+
+                Else
+
+                    WriteLine("You cannot place there, as the place is full.")
+
+                End If
+
+            Loop
+
+            updateGameGrid()
+
+            checkforwin()
+
+            valid = False
+
+            Do Until valid = True
+
+                WriteLine("{0} will go next. What x value do you want?", u1name)
+
+                Dim xval As Integer = ReadLine()
+
+                WriteLine("{0} what do you want your y value to be?", u1name)
+
+                Dim yval As Integer = ReadLine()
+
+                If board(xval, yval) Is " - " Then
+
+                    board(xval, yval) = " O "
+
+                    valid = True
+
+                Else
+
+                    WriteLine("You cannot place there, as the place is full.")
+
+                End If
+
+            Loop
+
+        Else
+
+            WriteLine("How did we get here?")
+
+        End If
+
+        updateGameGrid()
+
+        valid = False
+
+        ReadKey()
+
+    End Sub
+
+    Sub boardfullcheck()
+
+        Dim tempstor As String
+
+        emptytruth = 0
+
+        For i As Integer = 1 To 3
+
+            For x As Integer = 1 To 3
+
+                tempstor = (board(i, x))
+
+                If tempstor = " - " Then
+
+                    emptytruth += 1
+
+                Else
+
+ 
+
+                End If
+
+            Next
+
+        Next
+
+        If emptytruth > 0 Then
+
+            placeSymbol()
+
+        Else
+
+            WriteLine("The board is now full and the game will end")
+
+            emptytruth = -1
+
+        End If
+
+        ReadKey()
+
+    End Sub
+
+    Sub boardpopulation()
+
+        board(0, 0) = " X "
+
+        board(1, 0) = " A "
+
+        board(2, 0) = " B "
+
+        board(3, 0) = " C "
+
+        board(0, 1) = " A "
+
+        board(0, 2) = " B "
+
+        board(0, 3) = " C "
+
+        For i As Integer = 1 To 3
+
+            For x As Integer = 1 To 3
+
+                board(i, x) = " - "
+
+            Next
+
+            WriteLine()
+
+        Next
+
+    End Sub
+
+    Sub checkforwin()
+
+        WriteLine("Checking for win...")
+
+        Dim consti As String
+
+        For x As Integer = 1 To 3
+
+            For i As Integer = 1 To 3
+
+                consti = board(x, i)
+
+                If consti = " X " Then
+
+                    til3 += 1
+
+                Else
+
+                End If
+
+                If til3 = 3 Then
+
+                    WriteLine("Player One has won the game!")
+
+                    emptytruth = -1
+
+                    ReadKey()
+
+                Else
+
+ 
+
+                End If
+
+            Next
+
+        Next
+
+        til3 = 0
+
+        For x As Integer = 1 To 3
+
+            For i As Integer = 1 To 3
+
+ 
+
+                consti = board(x, i)
+
+                If consti = " O " Then
+
+                    til3 += 1
+
+                Else
+
+                End If
+
+                If til3 = 3 Then
+
+                    WriteLine("Player Two has won the game!")
+
+                    emptytruth = -1
+
+                    ReadKey()
+
+                Else
+
+ 
+
+                End If
+
+            Next
+
+        Next
+
+        til3 = 0
+
+        For x As Integer = 1 To 3
+
+            For i As Integer = 1 To 3
+
+                consti = board(i, x)
+
+                If consti = " X " Then
+
+                    til3 += 1
+
+                Else
+
+                End If
+
+                If til3 = 3 Then
+
+                    WriteLine("Player One has won the game!")
+
+                    emptytruth = -1
+
+                    ReadKey()
+
+                Else
+
+ 
+
+                End If
+
+            Next
+
+        Next
+
+        til3 = 0
+
+        For x As Integer = 1 To 3
+
+            For i As Integer = 1 To 3
+
+ 
+
+                consti = board(i, x)
+
+                If consti = " O " Then
+
+                    til3 += 1
+
+                Else
+
+                End If
+
+                If til3 = 3 Then
+
+                    WriteLine("Player Two has won the game!")
+
+                    emptytruth = -1
+
+                    ReadKey()
+
+                Else
+
+ 
+
+                End If
+
+            Next
+
+        Next
+
+        til3 = 0
+
+        For x As Integer = 1 To 3
+
+            For i As Integer = 3 To 1
+
+ 
+
+                consti = board(x, i)
+
+                If consti = " X " Then
+
+                    til3 += 1
+
+                Else
+
+                End If
+
+                If til3 = 3 Then
+
+                    WriteLine("Player One has won the game!")
+
+                    emptytruth = -1
+
+                    ReadKey()
+
+                Else
+
+ 
+
+                End If
+
+            Next
+
+        Next
+
+        til3 = 0
+
+        For x As Integer = 1 To 3
+
+            For i As Integer = 3 To 1
+
+ 
+
+                consti = board(x, i)
+
+                If consti = " O " Then
+
+                    til3 += 1
+
+                Else
+
+                End If
+
+                If til3 = 3 Then
+
+                    WriteLine("Player Two has won the game!")
+
+                    emptytruth = -1
+
+                    ReadKey()
+
+                Else
+
+ 
+
+                End If
+
+            Next
+
+        Next
+
+        til3 = 0
+
+        For x As Integer = 3 To 1
+
+            For i As Integer = 1 To 3
+
+ 
+
+                consti = board(x, i)
+
+                If consti = " X " Then
+
+                    til3 += 1
+
+                Else
+
+ 
+
+                End If
+
+                If til3 = 3 Then
+
+                    WriteLine("Player One has won the game!")
+
+                    emptytruth = -1
+
+                    ReadKey()
+
+                Else
+
+ 
+
+                End If
+
+            Next
+
+        Next
+
+        til3 = 0
+
+        For x As Integer = 3 To 1
+
+            For i As Integer = 1 To 3
+
+ 
+
+                consti = board(x, i)
+
+                If consti = " O " Then
+
+                    til3 += 1
+
+                Else
+
+                End If
+
+                If til3 = 3 Then
+
+                    WriteLine("Player Two has won the game!")
+
+                    emptytruth = -1
+
+                    ReadKey()
+
+                Else
+
+ 
+
+                End If
+
+            Next
+
+        Next
+
+        til3 = 0
+
+        WriteLine("Win checked!")
+
+    End Sub
+
+    Sub fileopen()
+
+        WriteLine("What is the name of the file you want me to open")
+
+        Dim filename As String = ReadLine()
+
+        Dim FileReader As String
+
+        FileReader = My.Computer.FileSystem.ReadAllText("N:\" + filename + ".txt")
+
+        WriteLine(FileReader)
+
+    End Sub
+
+    Sub filesave()
+
+        Dim file As System.IO.StreamWriter
+
+        file = My.Computer.FileSystem.OpenTextFileWriter("N:\test.txt", True)
+
+        For i = 0 To 3
+
+            For x = 0 To 3
+
+                file.Write(board(i, x))
+
+                file.Write(",")
+
+            Next
+
+            WriteLine()
+
+        Next
+
+        file.Close()
+
+    End Sub
+
+    Sub AlphaZeroEngineReborn()
+
+        WriteLine("Hello player! Who is simply too lonely to play with another person. What is your name?")
+
+        u1name = ReadLine()
+
+        Dim botname As String = "AlphaZero"
+
+        WriteLine("You will be playing against AlphaZero today. Lets see who goes first")
+
+        PickSymbolsAdjusted()
+
+        boardpopulation()
+
+        Do Until emptytruth = -1
+
+            boardfullcheckAdjusted()
+
+        Loop
+
+    End Sub
+
+    Sub boardfullcheckAdjusted()
+
+        Dim tempstor As String
+
+        emptytruth = 0
+
+        For i As Integer = 1 To 3
+
+            For x As Integer = 1 To 3
+
+                tempstor = (board(i, x))
+
+                If tempstor = " - " Then
+
+                    emptytruth += 1
+
+                Else
+
+ 
+
+                End If
+
+            Next
+
+        Next
+
+        If emptytruth > 0 Then
+
+            placeSymbolAdjusted()
+
+        Else
+
+            WriteLine("The board is now full and the game will end")
+
+            emptytruth = -1
+
+        End If
+
+        ReadKey()
+
+    End Sub
+
+    Sub placeSymbolAdjusted()
+
+        Clear()
+
+        If u1sym = "X" Then
+
+            Do Until valid = True
+
+                WriteLine("{0} will go first. What x value do you want?", u1name)
+
+                Dim xvalu As Integer = ReadLine()
+
+                WriteLine("{0} what do you want your y value to be?", u1name)
+
+                Dim yvalu As Integer = ReadLine()
+
+                If board(xvalu, yvalu) Is " - " Then
+
+                    board(xvalu, yvalu) = " X "
+
+                    valid = True
+
+                Else
+
+                    WriteLine("You cannot place there, as the place is full.")
+
+                End If
+
+            Loop
+
+            updateGameGrid()
+
+            checkforwin()
+
+            valid = False
+
+            Do Until valid = True
+
+                WriteLine("AlphaZero will go next.")
+
+                Randomize()
+
+                Dim xval As Integer = Math.Ceiling(Int(3) * Rnd())
+
+                Randomize()
+
+                Dim yval As Integer = Math.Ceiling(Int(3) * Rnd())
+
+                If board(xval, yval) Is " - " Then
+
+                    board(xval, yval) = " O "
+
+                    valid = True
+
+                    updateGameGrid()
+
+                    checkforwin()
+
+                Else
+
+                    WriteLine("You cannot place there, as the place is full.")
+
+                End If
+
+            Loop
+
+        ElseIf u2sym = "X" Then
+
+            Do Until valid = True
+
+                WriteLine("AlphaZero will go first.")
+
+                Randomize()
+
+                Dim xvalu As Integer = Math.Ceiling(Int(3) * Rnd())
+
+                Randomize()
+
+                Dim yvalu As Integer = Math.Ceiling(Int(3) * Rnd())
+
+                If board(xvalu, yvalu) Is " - " Then
+
+                    board(xvalu, yvalu) = " X "
+
+                    valid = True
+
+                Else
+
+                    WriteLine("You cannot place there, as the place is full.")
+
+                End If
+
+            Loop
+
+            updateGameGrid()
+
+            checkforwin()
+
+            valid = False
+
+            Do Until valid = True
+
+                WriteLine("{0} will go next. What x value do you want?", u1name)
+
+                Dim xval As Integer = ReadLine()
+
+                WriteLine("{0} what do you want your y value to be?", u1name)
+
+                Dim yval As Integer = ReadLine()
+
+                If board(xval, yval) Is " - " Then
+
+                    board(xval, yval) = " O "
+
+                    valid = True
+
+                    updateGameGrid()
+
+                    checkforwin()
+
+                Else
+
+                    WriteLine("You cannot place there, as the place is full.")
+
+                End If
+
+            Loop
+
+        Else
+
+            WriteLine("How did we get here?")
+
+        End If
+
+        valid = False
+
+        ReadKey()
+
+    End Sub
+
+    Sub PickSymbolsAdjusted()
+
+        Randomize()
+
+        ranum = Math.Ceiling(Int(2) * Rnd())
+
+        WriteLine(ranum)
+
+        If ranum = 1 Then
+
+            WriteLine("Player 1 choose X or O")
+
+            u1sym = ReadLine()
+
+            If u1sym = "X" Then
+
+                WriteLine("Player one will use X")
+
+                u2sym = "O"
+
+            ElseIf u1sym = "O" Then
+
+                WriteLine("Player one will use O")
+
+                u2sym = "X"
+
+            Else
+
+                WriteLine("You did not input a valid input")
+
+            End If
+
+        Else
+
+            WriteLine("AlphaZero will go first, that's unlucky.")
+
+            u2sym = "O"
+
+            u1sym = "X"
+
+        End If
+
+    End Sub
+
+End Module
