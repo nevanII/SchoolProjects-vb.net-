@@ -1,0 +1,25 @@
+Imports System.Console
+
+
+Module Module1
+
+    Sub Main()
+        For i As Integer = 0 To 10
+            WriteLine(Fibonacci(i))
+        Next
+        ReadKey()
+
+    End Sub
+    
+    
+    Function Fibonacci(ByVal n As Integer) As Integer
+        Dim a As Integer = 0
+        Dim b As Integer = 1
+        For i As Integer = 0 To n - 1
+            Dim temporary As Integer = a
+            a = b
+            b = temporary + b
+        Next
+        Return a
+    End Function
+End Module
