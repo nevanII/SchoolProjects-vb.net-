@@ -1,0 +1,44 @@
+Imports System.Console
+
+
+Module Module1
+
+    Dim alleged, numbereversed, fpi, checker As Integer
+    Dim storagearray(10000000) As Integer
+    Dim arrayempty As Boolean = False
+    Sub Main()
+        For i = 100 To 999
+            For x = 100 To 999
+                alleged = (x * i)
+                palindromecheck()
+            Next
+        Next
+        arraycheck()
+        ReadKey()
+    End Sub
+    
+    
+    Sub palindromecheck()
+        numbereversed = StrReverse(alleged)
+        If numbereversed = alleged Then
+            fpi += 1
+            storagearray(fpi) = numbereversed
+        Else
+
+        End If
+    End Sub
+    
+   
+    Sub arraycheck()
+        Do Until arrayempty = True
+            fpi += 1
+            WriteLine(storagearray(fpi))
+            checker = ReadLine()
+            If checker = 0 Then
+                arrayempty = True
+            Else
+
+            End If
+        Loop
+    End Sub
+End Module
