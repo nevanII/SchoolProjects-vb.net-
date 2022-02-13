@@ -1,0 +1,29 @@
+Imports System.Console
+
+
+Module Module1
+    Sub Main()
+        totalofsquares()
+        squareoftotals()
+        ReadKey()
+    End Sub
+    
+    
+    Sub totalofsquares()
+        Dim totalofsq As Integer
+        For i = 1 To 100
+            totalofsq += i * i
+        Next
+        WriteLine("The totalofsquares from 1 to 100 is {0}", totalofsq)
+    End Sub
+    
+    
+    Sub squareoftotals()
+        Dim sqoftotals, totals As Integer
+        For i = 1 To 100
+            totals += i
+        Next
+        sqoftotals = totals * totals
+        WriteLine("The squareoftotals from 1 to 100 is {0}", sqoftotals)
+    End Sub
+End Module
