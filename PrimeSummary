@@ -1,0 +1,31 @@
+Imports System.Console
+
+
+Module Module1
+    Dim PrimeTotal As Long
+    Sub Main()
+        PrimeSearch()
+        WriteLine("The total of all the primes under 2000000 is {0}", PrimeTotal)
+        ReadKey()
+    End Sub
+    
+    
+    Sub PrimeSearch()
+        Dim Count2 As Integer
+        Dim Prime As String
+        For Count1 = 2 To 1999999
+            Count2 = 2
+            Prime = "Yes"
+            While Count2 + Count2 <= Count1
+                If Count1 Mod Count2 = 0 Then
+                    Prime = "No"
+                End If
+                Count2 += 1
+            End While
+            If Prime = "Yes" Then
+                WriteLine(Count1)
+                PrimeTotal += Count1
+            End If
+        Next
+    End Sub
+End Module
